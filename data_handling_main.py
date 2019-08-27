@@ -13,9 +13,27 @@ def search_file_names():
                 if file_name[-4:] == ".txt":
                     file_names.append(i + "\\" + file_name)
 
+def form_record(record):
+    record_now = record[0]
+    record_then = record[1]
+    new_record_now = dict()
+    new_record_then = dict()
+
+    new_record_now["icv"] = int(record_now[0])
+    new_record_now["ici"] = int(record_now[1])
+    new_record_now["ibv"] = int(record_now[2])
+    new_record_now["ibt"] = int(record_now[3])
+    new_record_now["itt"] = int(record_now[4])
+    new_record_now["freq"] = int(record_now[5])
+    new_record_now["temp_th"] = int(record_now[6])
+    new_record_then["ibt"] = int(record_then[0])
+    new_record_then["itt"] = int(record_then[1])
+
+    return (new_record_now, new_record_then)
+
 
 def main():
-    json_file = open("./results.json", "w")
+    json_file = open("d:/Temp_data/results.json", "w")
     records = []
     record_num = 0
 
@@ -36,7 +54,7 @@ def main():
             record_num += 1
             #print("record: " + str(record_num))
             try:
-                records.append(data_record)
+                records.append(form_record(data_record))
             except:
                 print("mem err exit: record: " + str(record_num))
                 os._exit(-1)

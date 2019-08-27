@@ -11,7 +11,7 @@ def main():
     """
     # init filters
     filter_one = simulation_filters.TenMaFilter()
-    filter_two = simulation_filters.TopHundredRecordsFilter()
+    filter_two = simulation_filters.TopTenDiffRecordsFilter()
     filter_three = simulation_filters.TempDataFilter()
     # set input records
     filter_one.set_records(records)

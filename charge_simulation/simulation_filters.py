@@ -1,5 +1,5 @@
 import simulation_framework
-
+import operator
 
 class ModelFilter(simulation_framework.DataFilter):
     """
@@ -61,8 +61,8 @@ class TempDataFilter(ModelFilter):
     !!!---------------类自身不检查传入数据正确性---------------!!!
     """
     def _process_records(self):
-        new_record = [dict(), dict()]
         for record in self._ori_records:
+            new_record = [dict(), dict()]
             new_record[0]["ici"] = record[0]["ici"]
             new_record[0]["ibt"] = record[0]["ibt"]
             new_record[0]["itt"] = record[0]["itt"]
@@ -87,3 +87,31 @@ class TopHundredRecordsFilter(ModelFilter):
             if len(self._processed_records) > 100:
                 break
             self._processed_records.append(record)
+
+
+class TopThousandRecordsFilter(ModelFilter):
+    def _process_records(self):
+        for record in self._ori_records:
+            #print(record)
+            if len(self._processed_records) > 1000:
+                break
+            self._processed_records.append(record)
+
+
+class TopTenDiffRecordsFilter(ModelFilter):
+    def _process_records(self):
+        previous_record = [dict(),dict()]
+        for record in self._ori_records:
+            if len(self._processed_records) > 10:
+                break
+            try:
+                differ1 = set(record[0].items()) ^ set(previous_record[0].items())
+                differ2 = set(record[1].items()) ^ set(previous_record[1].items())
+                if len(differ1) == 0 and len(differ2) == 0:
+                    continue
+            except:
+                pass
+            if len(previous_record) == 0:
+                previous_record = record    
+            self._processed_records.append(record)
+#        print(self._processed_records)

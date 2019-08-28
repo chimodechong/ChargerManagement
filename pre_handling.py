@@ -1,14 +1,16 @@
 import os
 
-file_names = []
+file_names = set()
 
 def search_file_names():
-    file_path = ".\\"
+    file_path = "D:\\Temp_data"
     for i,j,k in os.walk(file_path):
+        #print(i,j,k)
         if len(k) > 0:
             for file_name in k:
                 if file_name[-4:] == ".txt":
-                    file_names.append(i + "\\" + file_name)
+                    file_names.add(i + "\\" + file_name)
+
 
 def main():
     for file_name in file_names:
@@ -24,4 +26,5 @@ def main():
 
 if __name__ == "__main__":
     search_file_names()
+    #print(file_names)
     main()

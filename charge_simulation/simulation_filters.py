@@ -116,6 +116,12 @@ class TopTenDiffRecordsFilter(ModelFilter):
             self._processed_records.append(record)
 
 
+class C34RecordsFilter(ModelFilter):
+    def _process_records(self):
+        for record in self._ori_records:
+            if record[0]["ibt"] >= 340 and record[0]["itt"] >= 340:
+                self._processed_records.append(record)
+
 class NowDataFilter(ModelFilter):
     """
     this class returns [{dict}, {}, {}...]

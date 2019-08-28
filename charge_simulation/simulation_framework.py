@@ -50,4 +50,18 @@ class ChargeAlgo(metaclass = abc.ABCMeta):
 
 
 class SimulationAlgo(metaclass = abc.ABCMeta):
+    @abc.abstractclassmethod
+    def set_data_set(self, data_set):
+        pass
+
+    @abc.abstractclassmethod
+    def set_data(self, data):
+        pass
+
+    @abc.abstractclassmethod
+    def get_result(self):
+        pass
+
+
+class SimulationSandBox(metaclass = abc.ABCMeta):
     pass

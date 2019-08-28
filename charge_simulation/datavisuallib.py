@@ -25,6 +25,8 @@ def show_scatter(x_axis, y_axis, records):
     counts = dict()
     count_values = []
 
+    print(len(records), " totally")
+
     for record in records:
         x_values.append(record[x_axis])
         y_values.append(record[y_axis])
@@ -44,15 +46,15 @@ def show_scatter(x_axis, y_axis, records):
         y_values.append(x_y_pair[1])
         count_values.append(counts[x_y_pair])
 
-    count_values = regulate(30000, 5000, count_values)
+    # change darkness of color here
+    count_values = regulate(20000, 5000, count_values)
 
     # this is to make sure plt renders the tintest color as it is
     x_values.append(max(x_values) + 1)
     y_values.append(max(y_values) + 1)
     count_values.append(0)
 
-    print("Total: " + str(len(x_values)) + " records to be shown")
-    plt.scatter(x_values, y_values, c=count_values, cmap=plt.cm.Blues, s=200)  # 传入两个列表，列表x_values的元素作为x坐标,列表y_values的元素作为y坐标，两个组合成一个点的坐标，所以一共有5个点
+    plt.scatter(x_values, y_values, c=count_values, cmap=plt.cm.Blues, s=10)  # 传入两个列表，列表x_values的元素作为x坐标,列表y_values的元素作为y坐标，两个组合成一个点的坐标，所以一共有5个点
     plt.title("Scatter darker=more data", fontsize=24)  # 指定标题，并设置标题字体大小
     plt.xlabel(x_axis, fontsize=14)  # 指定X坐标轴的标签，并设置标签字体大小
     plt.ylabel(y_axis, fontsize=14)  # 指定Y坐标轴的标签，并设置标签字体大小

@@ -8,3 +8,7 @@ This is a project for data-handling and simulating of wireless charging
 
 ## version 0.0.2
 * added filters class, provided several examples and a demo source file 
+
+## version 0.0.3
+* added framework for charge_algos
+* added a demo algo class

@@ -47,3 +47,7 @@ class ChargeAlgo(metaclass = abc.ABCMeta):
     @abc.abstractclassmethod
     def get_result(self):
         pass
+
+
+class SimulationAlgo(metaclass = abc.ABCMeta):
+    pass

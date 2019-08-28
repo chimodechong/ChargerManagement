@@ -114,4 +114,13 @@ class TopTenDiffRecordsFilter(ModelFilter):
             if len(previous_record) == 0:
                 previous_record = record    
             self._processed_records.append(record)
-#        print(self._processed_records)
+
+
+class NowDataFilter(ModelFilter):
+    """
+    this class returns [{dict}, {}, {}...]
+    each dict is a "now" data deprived from the original [{now_data}, {then_data}]
+    """
+    def _process_records(self):
+        for record in self._ori_records:
+            self._processed_records.append(record[0])

@@ -33,7 +33,8 @@ def form_record(record):
 
 
 def main():
-    json_file = open("d:/Temp_data/results.json", "w")
+    json1_file = open("d:/Temp_data/results1.json", "w")
+    json2_file = open("d:/Temp_data/results2.json", "w")
     records = []
     record_num = 0
 
@@ -59,8 +60,10 @@ def main():
                 print("mem err exit: record: " + str(record_num))
                 os._exit(-1)
         print("total records: " + str(record_num))
-    json_file.write(json.dumps(records))
-    json_file.close()
+    json1_file.write(json.dumps(records[0:int(len(records)/2)]))
+    json1_file.close()
+    json2_file.write(json.dumps(records[int(len(records)/2):]))
+    json2_file.close()
 
 if __name__ == "__main__":
     search_file_names()

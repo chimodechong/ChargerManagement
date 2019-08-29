@@ -30,28 +30,92 @@ class ModelFilter(simulation_framework.DataFilter):
             return self._next_filter.get_records()
 
 
+class ZeroMaFilter(ModelFilter):
+    # records should contain [ici] at least
+    def _process_records(self):
+        for record in self._ori_records:
+            if record[0]["ici"] <= 20:
+                self._processed_records.append(record)
+
+
+class ZeroMaGenFilter(ModelFilter):
+    """
+    change all ici to 0
+    """
+    # records should contain [ici] at least
+    def _process_records(self):
+        for record in self._ori_records:
+            new_record = [dict(), dict()]
+            new_record[0].update(record[0])
+            new_record[1].update(record[1])
+            new_record[0].update({"ici":0})
+            self._processed_records.append(new_record)
+
+
 class TenMaFilter(ModelFilter):
     # records should contain [ici] at least
     def _process_records(self):
         for record in self._ori_records:
-            if record[0]["ici"] >= 70 and record[0]["ici"] <= 130:
+            if record[0]["ici"] >= 80 and record[0]["ici"] <= 120:
                 self._processed_records.append(record)
+
+
+class TenMaGenFilter(ModelFilter):
+    """
+    change all ici to 100
+    """
+    # records should contain [ici] at least
+    def _process_records(self):
+        for record in self._ori_records:
+            new_record = [dict(), dict()]
+            new_record[0].update(record[0])
+            new_record[1].update(record[1])
+            new_record[0].update({"ici":100})
+            self._processed_records.append(new_record)
 
 
 class TwentyMaFilter(ModelFilter):
     # records should contain [ici] at least
     def _process_records(self):
         for record in self._ori_records:
-            if record[0]["ici"] >= 170 and record[0]["ici"] <= 230:
+            if record[0]["ici"] >= 180 and record[0]["ici"] <= 220:
                 self._processed_records.append(record)
+
+
+class TwentyMaGenFilter(ModelFilter):
+    """
+    change all ici to 200
+    """
+    # records should contain [ici] at least
+    def _process_records(self):
+        for record in self._ori_records:
+            new_record = [dict(), dict()]
+            new_record[0].update(record[0])
+            new_record[1].update(record[1])
+            new_record[0].update({"ici":200})
+            self._processed_records.append(new_record)
 
 
 class ThirtyMaFilter(ModelFilter):
     # records should contain [ici] at least
     def _process_records(self):
         for record in self._ori_records:
-            if record[0]["ici"] >= 270 and record[0]["ici"] <= 330:
+            if record[0]["ici"] >= 280 and record[0]["ici"] <= 320:
                 self._processed_records.append(record)
+
+
+class ThirtyMaGenFilter(ModelFilter):
+    """
+    change all ici to 300
+    """
+    # records should contain [ici] at least
+    def _process_records(self):
+        for record in self._ori_records:
+            new_record = [dict(), dict()]
+            new_record[0].update(record[0])
+            new_record[1].update(record[1])
+            new_record[0].update({"ici":300})
+            self._processed_records.append(new_record)
 
 
 class TempDataFilter(ModelFilter):
@@ -114,4 +178,19 @@ class TopTenDiffRecordsFilter(ModelFilter):
             if len(previous_record) == 0:
                 previous_record = record    
             self._processed_records.append(record)
-#        print(self._processed_records)
+
+
+class C34RecordsFilter(ModelFilter):
+    def _process_records(self):
+        for record in self._ori_records:
+            if record[0]["ibt"] >= 340 and record[0]["itt"] >= 340:
+                self._processed_records.append(record)
+
+class NowDataFilter(ModelFilter):
+    """
+    this class returns [{dict}, {}, {}...]
+    each dict is a "now" data deprived from the original [{now_data}, {then_data}]
+    """
+    def _process_records(self):
+        for record in self._ori_records:
+            self._processed_records.append(record[0])

@@ -47,3 +47,39 @@ class ChargeAlgo(metaclass = abc.ABCMeta):
     @abc.abstractclassmethod
     def get_result(self):
         pass
+
+
+class SimulationAlgo(metaclass = abc.ABCMeta):
+    @abc.abstractclassmethod
+    def set_data_set(self, data_set):
+        pass
+
+    @abc.abstractclassmethod
+    def set_data(self, data):
+        pass
+
+    @abc.abstractclassmethod
+    def get_result(self):
+        pass
+
+
+class SimulationSandBox(metaclass = abc.ABCMeta):
+    @abc.abstractclassmethod
+    def set_init_data(self, data_dict):
+        pass
+
+    @abc.abstractclassmethod
+    def add_charge_algo(self, algo_obj):
+        pass
+
+    @abc.abstractclassmethod
+    def add_simu_algo(self, algo_obj):
+        pass
+
+    @abc.abstractclassmethod
+    def one_step(self):
+        pass
+
+    @abc.abstractclassmethod
+    def get_simu_data(self):
+        pass

@@ -2,6 +2,7 @@
 提供一个从json文件读取信息的函数
 """
 import json
+import random
 
 def get_json_records(filename):
     json_file = open(filename, "r")
@@ -22,3 +23,12 @@ def print_records(records):
         print("----> ", end="")
         print_dict(record[1])
         print()
+
+# input dict{num:frequency}
+# output a num from the dict keys from frequency
+def record_change(freq_dict):
+    appearances_list = []
+    for key in freq_dict.keys():
+        for i in range(freq_dict[key]):
+            appearances_list.append(key)
+    return random.choice(appearances_list)

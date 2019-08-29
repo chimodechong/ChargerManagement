@@ -33,7 +33,9 @@ def main():
     print("starting program")
     records_part1 = recordslib.get_json_records("D:/Temp_data/results1.json")
     records_part2 = recordslib.get_json_records("D:/Temp_data/results2.json")
-    records = records_part1 + records_part2
+    records_part3 = recordslib.get_json_records("D:/Temp_data/results3.json")
+    records_part4 = recordslib.get_json_records("D:/Temp_data/results4.json")
+    records = records_part1 + records_part2 + records_part3 + records_part4
     print("records got")
 
     """

@@ -89,6 +89,7 @@ class IPGDataGetter(DataHandler):
     def __init__(self):
         self.__file_data = list()
         self.__processed_file_data = list()
+        self.__has_hk = False
 
     # public 读入源文件数据方法
     # return: none
@@ -100,10 +101,24 @@ class IPGDataGetter(DataHandler):
     
     # protected 确认某行是否为合理数据
     # return boolean
+    """
+    hk 后的第一条数据不准，在此过滤 --2019.08.29
+    """
     def _is_valid_line(self, line):
         line_elements = line.split()
         if len(line_elements) == 23 and line_elements[0] == "IPG:":
-            return True
+            if self.__has_hk:
+                #print("abondoning")
+                self.__has_hk = False
+                return False
+            else:
+                return True
+        elif "hk" in line_elements:
+            #print("hk")
+            self.__has_hk = True
+            return False
+        else:
+            return False
 
     def _split_line(self, line):
         elements = self.__re_pattern.findall(line)

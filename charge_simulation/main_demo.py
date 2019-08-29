@@ -19,7 +19,7 @@ def main():
     simu_sandbox.add_simu_algo(simu_algo)
     simu_sandbox.set_init_data({"ibt":350, "itt":350})
 
-    simu_sandbox.seconds_simu(72000)
+    simu_sandbox.seconds_simu(9600)
     results = simu_sandbox.get_simu_data()
     """
     datavisuallib.show_figure("tick", "ibt", results)

@@ -1,29 +1,80 @@
 import simulation_framework
+import recordslib
+import sys
 
-"""
-在此声明充电算法，所有算法类均应继承simulation_framework.ChargeAlgo
-"""
-
-class DemoAlgo(simulation_framework.ChargeAlgo):
-    """
-    样例类，提供一个超温停止充电120s的简单算法
-    """
+class ConcreteSandbox(simulation_framework.SimulationSandBox):
     def __init__(self):
-        self.__ibt = 0
-        self.__itt = 0
-        self.__wait_seconds = 0
+        self.__chg_algo = None
+        self.__simu_algo = None
+        self.__simu_results = []
+        self.__current_data = dict()
+        self.__tick = 0
 
-    def update(self, data_dict):
-        self.__ibt = data_dict["ibt"]
-        self.__itt = data_dict["itt"]
+    def set_init_data(self, data_dict):
+        self.__current_data = data_dict
 
-    def show_result(self):
-        # if still waiting, update waiting timer
-        if self.__wait_seconds > 0:
-            self.__wait_seconds -= 2
-        # if over-heat, stop charing for 2mins
-        elif self.__itt >= 390 or self.__ibt >= 395:
-            self.__wait_seconds = 120
-        # else charge in 30.0mA
+    def add_charge_algo(self, algo_obj):
+        self.__chg_algo = algo_obj
+
+    def add_simu_algo(self, algo_obj):
+        self.__simu_algo = algo_obj
+
+    def one_step(self):
+        # now current_data contains the current temp and the ici before
+        self.__chg_algo.update(self.__current_data)
+        self.__current_data.update(self.__chg_algo.get_result())
+        # now current_data contains the current temp and the ici
+        # add data dict to list
+        self.__current_data.update({"tick":self.__tick})
+        new_data = dict()
+        new_data.update(self.__current_data)
+        self.__simu_results.append(new_data)
+        # use the data now to calculate next environment
+        self.__tick += 2
+        self.__simu_algo.set_data(self.__current_data)
+        self.__current_data.update(self.__simu_algo.get_result())
+
+    def seconds_simu(self, seconds):
+        while seconds > 0:
+            self.one_step()
+            seconds -= 2
+
+    def get_simu_data(self):
+        return self.__simu_results
+
+
+class ConcreteSimuAlgo(simulation_framework.SimulationAlgo):
+    def __init__(self):
+        self.__0ma_dataset = None
+        self.__10ma_dataset = None
+        self.__20ma_dataset = None
+        self.__30ma_dataset = None
+        self.__current_data = None
+
+    def set_data_set(self, data_set):
+        """
+        for each dataset
+        dict{ { (ibt*1000 + itt): dict{ (ibt_then*1000 + itt_then): num_of_appearance } }
+        """
+        self.__0ma_dataset = data_set[0]
+        self.__10ma_dataset = data_set[1]
+        self.__20ma_dataset = data_set[2]
+        self.__30ma_dataset = data_set[3]
+
+    def set_data(self, data):
+        self.__current_data = data
+
+    def get_result(self):
+        data_key = str(int(self.__current_data["ibt"] * 1000 + self.__current_data["itt"]))
+        if self.__current_data["ici"] == 0:
+            result = int(recordslib.record_change(self.__0ma_dataset[data_key]))
+        elif self.__current_data["ici"] == 100:
+            result = int(recordslib.record_change(self.__10ma_dataset[data_key]))
+        elif self.__current_data["ici"] == 200:
+            result = int(recordslib.record_change(self.__20ma_dataset[data_key]))
+        elif self.__current_data["ici"] == 300:
+            result = int(recordslib.record_change(self.__30ma_dataset[data_key]))
         else:
-            return {"ici": 300}
+            print("ici out of range")
+            sys.exit(-1)
+        return {"ibt": ((result - (result%1000))/1000), "itt" : (result%1000)}

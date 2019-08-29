@@ -64,4 +64,22 @@ class SimulationAlgo(metaclass = abc.ABCMeta):
 
 
 class SimulationSandBox(metaclass = abc.ABCMeta):
-    pass
+    @abc.abstractclassmethod
+    def set_init_data(self, data_dict):
+        pass
+
+    @abc.abstractclassmethod
+    def add_charge_algo(self, algo_obj):
+        pass
+
+    @abc.abstractclassmethod
+    def add_simu_algo(self, algo_obj):
+        pass
+
+    @abc.abstractclassmethod
+    def one_step(self):
+        pass
+
+    @abc.abstractclassmethod
+    def get_simu_data(self):
+        pass

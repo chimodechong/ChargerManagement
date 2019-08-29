@@ -7,7 +7,10 @@ def regulate(max_num, min_num, values):
     print("min value: " + str(min_value))
     result = []
     for value in values:
-        temp_value = round((max_num - min_num) * (value - min_value) / (max_value - min_value)) + min_num
+        try:
+            temp_value = round((max_num - min_num) * (value - min_value) / (max_value - min_value)) + min_num
+        except:
+            temp_value = min_num
         result.append(temp_value)
     #print(result)
     return result
@@ -54,9 +57,62 @@ def show_scatter(x_axis, y_axis, records):
     y_values.append(max(y_values) + 1)
     count_values.append(0)
 
-    plt.scatter(x_values, y_values, c=count_values, cmap=plt.cm.Blues, s=10)  # 传入两个列表，列表x_values的元素作为x坐标,列表y_values的元素作为y坐标，两个组合成一个点的坐标，所以一共有5个点
+    plt.scatter(x_values, y_values, c=count_values, cmap=plt.cm.Blues, s=10)  # 传入两个列表，列表x_values的元素作为x坐标,列表y_values的元素作为y坐标，两个组合成一个点的坐标
     plt.title("Scatter darker=more data", fontsize=24)  # 指定标题，并设置标题字体大小
     plt.xlabel(x_axis, fontsize=14)  # 指定X坐标轴的标签，并设置标签字体大小
     plt.ylabel(y_axis, fontsize=14)  # 指定Y坐标轴的标签，并设置标签字体大小
     plt.tick_params(axis='both', labelsize=10)  # 参数axis值为both，代表要设置横纵的刻度标记，标记大小为14
+    plt.show()
+
+
+def show_figure(x_axis, y_axis, records):
+    """
+    this function is used to visualize and check the trend of dataset
+    records should be in form [{data_dict}] or iterator
+    x_axis, y_axis should be among: [ici, icv, ibv, ibt, itt, freq, temp_th]
+    """
+    x_values = []
+    y_values = []
+
+    print(len(records), " totally")
+
+    for record in records:
+        x_values.append(record[x_axis])
+        y_values.append(record[y_axis])
+
+    plt.plot(x_values, y_values, label=y_axis)
+    plt.title("Data trend", fontsize=24)  # 指定标题，并设置标题字体大小
+    plt.xlabel(x_axis, fontsize=14)  # 指定X坐标轴的标签，并设置标签字体大小
+    plt.ylabel(y_axis, fontsize=14)  # 指定Y坐标轴的标签，并设置标签字体大小
+    plt.tick_params(axis='both', labelsize=10)  # 参数axis值为both，代表要设置横纵的刻度标记，标记大小为14
+    plt.show()
+
+
+def show_charge_process(records):
+    """
+    this function is used to visualize and check the trend of dataset
+    records should be in form [{data_dict}] or iterator
+    x_axis, y_axis should be among: [ici, icv, ibv, ibt, itt, freq, temp_th]
+    """
+    x_values = []
+    y_values = []
+    z_values = []
+    w_values = []
+
+    print(len(records), " totally")
+
+    for record in records:
+        x_values.append(record["tick"])
+        y_values.append(record["ibt"])
+        z_values.append(record["itt"])
+        w_values.append(record["ici"])
+
+    plt.plot(x_values, y_values, label="ibt") 
+    plt.plot(x_values, z_values, label="itt") 
+    plt.plot(x_values, w_values, label="ici") 
+    plt.title("Simulation result", fontsize=24)  # 指定标题，并设置标题字体大小
+    plt.xlabel("tick", fontsize=14)  # 指定X坐标轴的标签，并设置标签字体大小
+    plt.grid(True)
+    plt.tick_params(axis='both', labelsize=10)  # 参数axis值为both，代表要设置横纵的刻度标记，标记大小为14
+    plt.legend(loc = "best")
     plt.show()

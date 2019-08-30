@@ -35,15 +35,21 @@ def form_record(record):
 def main():
     json1_file = open("d:/Temp_data/results1.json", "w")
     json2_file = open("d:/Temp_data/results2.json", "w")
+    json3_file = open("d:/Temp_data/results3.json", "w")
+    json4_file = open("d:/Temp_data/results4.json", "w")
     records = []
     record_num = 0
+    file_names1 = file_names[:round(len(file_names)/4)]
+    file_names2 = file_names[round(len(file_names)/4):round(len(file_names)/2)]
+    file_names3 = file_names[round(len(file_names)/2):round(len(file_names)/4*3)]
+    file_names4 = file_names[round(len(file_names)/4*3):]
 
     """更改数据过滤和处理方法仅需修改下两行"""
     iterator_factory = data_handling.IPGDataIteratorFactory()  # determine rough filter
     factory = data_handling.SecondFilterFactory() # determine how data processed
 
 
-    for file_name in file_names:
+    for file_name in file_names1:
         print("handling: " + file_name)
 
         data_iterator = iterator_factory.create_iterator()
@@ -60,12 +66,82 @@ def main():
                 print("mem err exit: record: " + str(record_num))
                 os._exit(-1)
         print("total records: " + str(record_num))
-    json1_file.write(json.dumps(records[0:int(len(records)/2)]))
+    json1_file.write(json.dumps(records))
     json1_file.close()
-    json2_file.write(json.dumps(records[int(len(records)/2):]))
+    print("wrote ", len(records), " records to json1")
+    input()
+
+    records = []
+    for file_name in file_names2:
+        print("handling: " + file_name)
+
+        data_iterator = iterator_factory.create_iterator()
+        product = factory.create_product(data_iterator)
+
+        product.read_data(file_name)
+        product.process_data()
+        for data_record in product.show_result():
+            record_num += 1
+            #print("record: " + str(record_num))
+            try:
+                records.append(form_record(data_record))
+            except:
+                print("mem err exit: record: " + str(record_num))
+                os._exit(-1)
+        print("total records: " + str(record_num))
+    json2_file.write(json.dumps(records))
     json2_file.close()
+    print("wrote ", len(records), " records to json2")
+    input()
+
+    records = []
+    for file_name in file_names3:
+        print("handling: " + file_name)
+
+        data_iterator = iterator_factory.create_iterator()
+        product = factory.create_product(data_iterator)
+
+        product.read_data(file_name)
+        product.process_data()
+        for data_record in product.show_result():
+            record_num += 1
+            #print("record: " + str(record_num))
+            try:
+                records.append(form_record(data_record))
+            except:
+                print("mem err exit: record: " + str(record_num))
+                os._exit(-1)
+        print("total records: " + str(record_num))
+    json3_file.write(json.dumps(records))
+    json3_file.close()
+    print("wrote ", len(records), " records to json3")
+    input()
+
+    records = []
+    for file_name in file_names4:
+        print("handling: " + file_name)
+
+        data_iterator = iterator_factory.create_iterator()
+        product = factory.create_product(data_iterator)
+
+        product.read_data(file_name)
+        product.process_data()
+        for data_record in product.show_result():
+            record_num += 1
+            #print("record: " + str(record_num))
+            try:
+                records.append(form_record(data_record))
+            except:
+                print("mem err exit: record: " + str(record_num))
+                os._exit(-1)
+        print("total records: " + str(record_num))
+    json4_file.write(json.dumps(records))
+    json4_file.close()
+    print("wrote ", len(records), " records to json4")
+    input()
 
 if __name__ == "__main__":
     search_file_names()
+    #print(len(file_names))
     #print(file_names)
     main()
